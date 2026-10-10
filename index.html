@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111827">
+  <title>Site theLaunch — Ship your website</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Site theLaunch home"><span class="brand-mark">S</span><span>Site <b>theLaunch</b></span></a>
+    <div class="top-actions"><span class="status-dot"></span><span class="status-label">Static hosting workspace</span><button id="logoutBtn" class="button button-quiet hidden" type="button">Sign out</button></div>
+  </header>
+
+  <main class="shell">
+    <section id="authView" class="auth-layout">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="eyebrow-line"></span> BUILD · PUBLISH · GROW</div>
+        <h1>Your next website<br><span>starts here.</span></h1>
+        <p class="hero-subtitle">A home for your projects, repositories, and published websites. Upload a ZIP or deploy a public Git repository.</p>
+        <div class="feature-row"><span class="feature-icon">↗</span><div><b>Publish in minutes</b><small>Deploy static sites from one workspace.</small></div></div>
+        <div class="feature-row"><span class="feature-icon">⌘</span><div><b>Keep projects organized</b><small>Track your sources and deployment history.</small></div></div>
+        <p class="local-note"><span>●</span> Local development mode · Your projects are stored on this server.</p>
+      </div>
+      <div class="auth-card">
+        <div class="auth-tabs"><button id="loginTab" class="auth-tab active" type="button">Sign in</button><button id="registerTab" class="auth-tab" type="button">Create account</button></div>
+        <form id="authForm">
+          <h2 id="authTitle">Welcome back</h2><p id="authDescription" class="muted">Sign in to continue to your workspace.</p>
+          <label id="nameLabel" class="field hidden">Full name<input id="nameInput" name="name" autocomplete="name" maxlength="48" placeholder="Your name"></label>
+          <label class="field">Email address<input id="emailInput" name="email" type="email" autocomplete="email" required maxlength="190" placeholder="you@example.com"></label>
+          <label class="field">Password<input id="passwordInput" name="password" type="password" autocomplete="current-password" required minlength="10" maxlength="72" placeholder="At least 10 characters"></label>
+          <button id="authSubmit" class="button button-primary button-full" type="submit">Sign in <span>→</span></button>
+          <p id="authMessage" class="message" role="status"></p>
+          <p class="fine-print">By continuing, you agree to use this workspace responsibly. Never upload secrets or private keys into a public website.</p>
+        </form>
+      </div>
+    </section>
+
+    <section id="dashboardView" class="hidden">
+      <div class="dashboard-heading"><div><div class="eyebrow"><span class="eyebrow-line"></span> YOUR WORKSPACE</div><h1>Ship something <span>great.</span></h1><p class="muted">Create a project, publish a static website, and manage your deployments.</p></div><div class="user-chip"><span id="userAvatar" class="avatar">U</span><div><b id="userName">Developer</b><small id="userEmail"></small></div></div></div>
+      <div class="stats-grid"><article class="stat-card"><span class="stat-icon purple">▦</span><span class="stat-label">Projects</span><strong id="projectCount">0</strong><small>In your workspace</small></article><article class="stat-card"><span class="stat-icon green">↗</span><span class="stat-label">Live websites</span><strong id="liveCount">0</strong><small>Successfully published</small></article><article class="stat-card"><span class="stat-icon amber">◷</span><span class="stat-label">Latest activity</span><strong id="latestActivity">—</strong><small>Most recent project</small></article></div>
+
+      <div class="workspace-grid">
+        <section class="panel create-panel"><div class="panel-heading"><div><h2>Create a deployment</h2><p class="muted">Choose a source to get started.</p></div><span class="panel-badge">NEW PROJECT</span></div>
+          <div class="source-tabs"><button class="source-tab active" data-source="upload" type="button"><span>⇧</span> Upload ZIP</button><button class="source-tab" data-source="git" type="button"><span>⑂</span> Public Git repo</button></div>
+          <form id="uploadForm" class="source-form"><label class="field">Project name<input name="name" required minlength="2" maxlength="48" pattern="[A-Za-z0-9][A-Za-z0-9 _-]{1,47}" placeholder="my-awesome-site"></label><label class="field">Website ZIP file<div class="file-drop"><span class="upload-symbol">⇧</span><b>Choose a ZIP archive</b><small>Must contain index.html · Maximum 10 MB</small><input id="zipInput" name="siteZip" type="file" accept=".zip,application/zip" required></div></label><button class="button button-primary button-full" type="submit">Upload and publish <span>→</span></button></form>
+          <form id="gitForm" class="source-form hidden"><label class="field">Project name<input name="name" required minlength="2" maxlength="48" pattern="[A-Za-z0-9][A-Za-z0-9 _-]{1,47}" placeholder="my-git-site"></label><label class="field">Public GitHub or GitLab URL<input name="sourceUrl" type="url" required placeholder="https://github.com/user/repository"></label><div class="notice"><b>Static sites only for now.</b> The repository must contain an index.html. Build scripts are not executed.</div><button class="button button-primary button-full" type="submit">Clone and publish <span>→</span></button></form>
+          <p id="createMessage" class="message" role="status"></p>
+        </section>
+        <section class="panel projects-panel"><div class="panel-heading"><div><h2>Your projects</h2><p class="muted">Projects and their current publishing status.</p></div><button id="refreshBtn" class="button button-quiet" type="button" title="Refresh projects">↻ Refresh</button></div><div id="projectList" class="project-list"><div class="empty-state"><span class="empty-icon">▦</span><b>Your workspace is ready</b><p>Create your first project using the form.</p></div></div></section>
+      </div>
+      <section id="detailsPanel" class="panel details-panel hidden"><div class="panel-heading"><div><h2 id="detailsTitle">Deployment history</h2><p class="muted">Recent attempts to publish this project.</p></div><button id="closeDetails" class="button button-quiet" type="button">Close ×</button></div><div id="deploymentList" class="deployment-list"></div></section>
+      <footer class="dashboard-footer"><span>Site theLaunch <b>v2 starter</b></span><span>Static publishing · Git source · Persistent project records</span></footer>
+    </section>
+  </main>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
